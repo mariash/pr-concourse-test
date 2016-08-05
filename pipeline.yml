@@ -16,6 +16,7 @@ jobs:
 - name: test pull request
   plan:
   - get: pr-concourse-test
+    version: every
     trigger: true
   - put: pr-concourse-test
     params:
