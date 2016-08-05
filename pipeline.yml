@@ -29,7 +29,7 @@ jobs:
         path: sh
         args:
         - -c
-        - cd pr-concourse-test && git --no-pager show
+        - cd pr-concourse-test && sleep 180 && git --no-pager show
       inputs:
       - name: pr-concourse-test
         path: ""
