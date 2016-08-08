@@ -11,16 +11,15 @@ resources:
     repo: halimacc/pr-concourse-test
     access_token: {{github_access_token}}
     private_key: {{git_private_key}}
+    every: true
 
 jobs:
-- name: test pull request
+- name: job1
+#  serial_groups: ['job2', 'job3']
   plan:
   - get: pr-concourse-test
     trigger: true
-  - put: pr-concourse-test
-    params:
-      path: pr-concourse-test
-      status: pending
+    version: every
   - task: do something with git
     config:
       platform: linux
@@ -29,17 +28,48 @@ jobs:
         path: sh
         args:
         - -c
-        - cd pr-concourse-test && sleep 180 && git --no-pager show
+        - cd pr-concourse-test && sleep 15 && git --no-pager show
       inputs:
       - name: pr-concourse-test
         path: ""
-    on_success:
-      put: pr-concourse-test
-      params:
-        path: pr-concourse-test
-        status: success
-    on_failure:
-      put: pr-concourse-test
-      params:
-        path: pr-concourse-test
-        status: failure
+
+# - name: job2
+#   serial_groups: ['job2']
+#   plan:
+#   - get: pr-concourse-test
+#     trigger: true
+#     version: 'every'
+#     passed: ['job1']
+#   - task: do something with git
+#     config:
+#       platform: linux
+#       image: docker:///concourse/git-resource
+#       run:
+#         path: sh
+#         args:
+#         - -c
+#         - cd pr-concourse-test && sleep 30 && git --no-pager show
+#       inputs:
+#       - name: pr-concourse-test
+#         path: ""
+
+# - name: job3
+#   serial_groups: ['job3']
+#   plan:
+#   - get: pr-concourse-test
+#     trigger: true
+#     version: 'every'
+#     passed: ['job1']
+#   - task: do something with git
+#     config:
+#       platform: linux
+#       image: docker:///concourse/git-resource
+#       run:
+#         path: sh
+#         args:
+#         - -c
+#         - cd pr-concourse-test && sleep 15 && git --no-pager show
+#       inputs:
+#       - name: pr-concourse-test
+#         path: ""
+
