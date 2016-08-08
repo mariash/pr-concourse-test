@@ -11,6 +11,7 @@ resources:
     repo: halimacc/pr-concourse-test
     access_token: {{github_access_token}}
     private_key: {{git_private_key}}
+    every: true
 
 jobs:
 - name: test pull request
