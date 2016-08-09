@@ -30,7 +30,6 @@ resources:
 
 jobs:
 - name: job1
-  serial_groups: ['job2', 'job3']
   plan:
   - get: git-concourse-test
     trigger: true
@@ -51,7 +50,6 @@ jobs:
         path: ""
 
 - name: job2
-  serial_groups: ['job2']
   plan:
   - get: git-concourse-test
     trigger: true
@@ -71,7 +69,6 @@ jobs:
         path: ""
 
 - name: job3
-  serial_groups: ['job3']
   plan:
   - get: git-concourse-test
     trigger: true
