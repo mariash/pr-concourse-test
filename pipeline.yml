@@ -22,9 +22,31 @@ resources:
 
 jobs:
 - name: job1
+  serial_groups: ['job2', 'job3']
   plan:
   - get: git-concourse-test
     trigger: true
+    version: every
+  - task: do something with git
+    config:
+      platform: linux
+      image: docker:///concourse/git-resource
+      run:
+        path: sh
+        args:
+        - -c
+        - cd git-concourse-test && sleep 15 && git --no-pager show
+      inputs:
+      - name: git-concourse-test
+        path: ""
+
+- name: job2
+  serial_groups: ['job2']
+  plan:
+  - get: git-concourse-test
+    trigger: true
+    version: every
+    passed: ['job1']
   - task: do something with git
     config:
       platform: linux
@@ -37,3 +59,42 @@ jobs:
       inputs:
       - name: git-concourse-test
         path: ""
+
+- name: job3
+  serial_groups: ['job3']
+  plan:
+  - get: git-concourse-test
+    trigger: true
+    version: every
+    passed: ['job1']
+  - task: do something with git
+    config:
+      platform: linux
+      image: docker:///concourse/git-resource
+      run:
+        path: sh
+        args:
+        - -c
+        - cd git-concourse-test && sleep 30 && git --no-pager show
+      inputs:
+      - name: git-concourse-test
+        path: ""
+
+- name: job4
+  plan:
+  - get: git-concourse-test
+    trigger: true
+    version: every
+    passed: ['job2', 'job3']
+  - task: do something with git
+    config:
+      platform: linux
+      image: docker:///concourse/git-resource
+      run:
+        path: sh
+        args:
+        - -c
+        - cd git-concourse-test && git --no-pager show
+      inputs:
+      - name: git-concourse-test
+        path: ""  
