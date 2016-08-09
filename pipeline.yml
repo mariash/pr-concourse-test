@@ -25,6 +25,7 @@ resources:
   source:
     uri: git@github.com:halimacc/pool-concourse-test
     branch: master
+    pool: pipeline
     private_key: {{git_private_key}}
 
 jobs:
@@ -34,7 +35,6 @@ jobs:
   - get: git-concourse-test
     trigger: true
     version: every
-  - get: pool-concourse-test
   - put: pool-concourse-test
     params: {acquire: true}
   - task: do something with git
@@ -108,5 +108,6 @@ jobs:
       inputs:
       - name: git-concourse-test
         path: ""  
+  - get: pool-concourse-test
   - put: pool-concourse-test
-    params: {release: true}
+    params: {release: pool-concourse-test}
