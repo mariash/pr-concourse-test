@@ -45,7 +45,7 @@ jobs:
         path: sh
         args:
         - -c
-        - cd git-concourse-test && sleep 15 && git --no-pager show
+        - cd git-concourse-test && git --no-pager show
       inputs:
       - name: git-concourse-test
         path: ""
@@ -64,7 +64,7 @@ jobs:
         path: sh
         args:
         - -c
-        - cd git-concourse-test && sleep 60 && git --no-pager show
+        - cd git-concourse-test && sleep 15 && git --no-pager show
       inputs:
       - name: git-concourse-test
         path: ""
@@ -83,7 +83,7 @@ jobs:
         path: sh
         args:
         - -c
-        - cd git-concourse-test && sleep 30 && git --no-pager show
+        - cd git-concourse-test && sleep 10 && git --no-pager show
       inputs:
       - name: git-concourse-test
         path: ""
