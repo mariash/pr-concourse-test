@@ -30,6 +30,7 @@ resources:
 
 jobs:
 - name: job1
+  serial: true
   plan:
   - get: git-concourse-test
     trigger: true
