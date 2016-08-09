@@ -17,6 +17,13 @@ resources:
   type: git
   source:
     uri: git@github.com:halimacc/pr-concourse-test
+    branch: pool
+    private_key: {{git_private_key}}
+
+- name: pool-concourse-test
+  type: pool
+  source:
+    uri: git@github.com:halimacc/pool-concourse-test
     branch: master
     private_key: {{git_private_key}}
 
@@ -27,6 +34,9 @@ jobs:
   - get: git-concourse-test
     trigger: true
     version: every
+  - get: pool-concourse-test
+  - put: pool-concourse-test
+    params: {acquire: true}
   - task: do something with git
     config:
       platform: linux
@@ -98,3 +108,5 @@ jobs:
       inputs:
       - name: git-concourse-test
         path: ""  
+  - put: pool-concourse-test
+    params: {release: true}
