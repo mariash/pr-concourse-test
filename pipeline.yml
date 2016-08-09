@@ -11,16 +11,20 @@ resources:
     repo: halimacc/pr-concourse-test
     access_token: {{github_access_token}}
     private_key: {{git_private_key}}
+    every: true
+
+- name: git-concourse-test
+  type: git
+  source:
+    uri: git@github.com:halimacc/pr-concourse-test
+    branch: master
+    private_key: {{git_private_key}}
 
 jobs:
-- name: test pull request
+- name: job1
   plan:
-  - get: pr-concourse-test
+  - get: git-concourse-test
     trigger: true
-  - put: pr-concourse-test
-    params:
-      path: pr-concourse-test
-      status: pending
   - task: do something with git
     config:
       platform: linux
